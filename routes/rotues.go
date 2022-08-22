@@ -24,3 +24,11 @@ func AddIngredient(c *fiber.Ctx) error {
 
 	return c.Status(200).JSON(ingredient)
 }
+
+func DeleteIngredient(c *fiber.Ctx) error {
+	var ingredient []models.Ingredient
+	id := c.Params("id")
+	database.DBConn.Where("id = ?", id).Delete(&ingredient)
+
+	return c.Status(200).JSON("deleted")
+}

@@ -13,6 +13,7 @@ import (
 func setUpRoutes(app *fiber.App) {
 	app.Get("/", routes.AllIngredients)
 	app.Post("/", routes.AddIngredient)
+	app.Delete("/:id", routes.DeleteIngredient)
 }
 
 func main() {
