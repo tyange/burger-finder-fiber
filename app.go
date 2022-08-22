@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	_ "log"
 
 	"burger-finder-fiber/database"
@@ -26,5 +27,5 @@ func main() {
 		return c.SendStatus(404) // => 404 "Not Found"
 	})
 
-	app.Listen("127.0.0.1:3000")
+	log.Fatal(app.Listen("127.0.0.1:3000"))
 }
