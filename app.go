@@ -26,5 +26,5 @@ func main() {
 		return c.SendStatus(404) // => 404 "Not Found"
 	})
 
-	app.Listen(":3000")
+	app.Listen("127.0.0.1:3000")
 }
