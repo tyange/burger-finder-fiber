@@ -25,10 +25,28 @@ func AddIngredient(c *fiber.Ctx) error {
 	return c.Status(200).JSON(ingredient)
 }
 
+func UpdateIngredient(c *fiber.Ctx) error {
+	var ingredient []models.Ingredient
+	updatedData := new(models.Ingredient)
+	id := c.Params("id")
+
+	targetIngredient := database.DBConn.Model(&ingredient).Where("id = ?", id)
+
+	if err := c.BodyParser(updatedData); err != nil {
+		return c.Status(400).JSON(err.Error())
+	}
+
+	targetIngredient.Updates(models.Ingredient{Name: updatedData.Name, Kind: updatedData.Kind})
+
+	return c.Status(200).JSON(updatedData)
+}
+
 func DeleteIngredient(c *fiber.Ctx) error {
 	var ingredient []models.Ingredient
 	id := c.Params("id")
-	database.DBConn.Where("id = ?", id).Delete(&ingredient)
+	targetIngredient := database.DBConn.Model(&ingredient).Where("id = ?", id)
+
+	targetIngredient.Delete(&ingredient)
 
 	return c.Status(200).JSON("deleted")
 }
