@@ -11,6 +11,7 @@ import (
 
 func setUpRoutes(app *fiber.App) {
 	app.Get("/ingredient", routes.AllIngredients)
+	app.Get("/ingredient/:id", routes.FindOneIngredient)
 	app.Post("/ingredient", routes.AddIngredient)
 	app.Put("/ingredient/:id", routes.UpdateIngredient)
 	app.Delete("/ingredient/:id", routes.DeleteIngredient)

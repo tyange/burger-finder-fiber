@@ -14,6 +14,15 @@ func AllIngredients(c *fiber.Ctx) error {
 	return c.Status(200).JSON(ingredients)
 }
 
+func FindOneIngredient(c *fiber.Ctx) error {
+	var ingredient []models.Ingredient
+	id := c.Params("id")
+
+	database.DBConn.Model(&ingredient).Where("id = ?", &id)
+
+	return c.Status(200).JSON(&ingredient)
+}
+
 func AddIngredient(c *fiber.Ctx) error {
 	ingredient := new(models.Ingredient)
 	if err := c.BodyParser(ingredient); err != nil {
