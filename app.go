@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	_ "log"
 
 	"burger-finder-fiber/database"
 	"burger-finder-fiber/routes"
@@ -11,9 +10,10 @@ import (
 )
 
 func setUpRoutes(app *fiber.App) {
-	app.Get("/", routes.AllIngredients)
-	app.Post("/", routes.AddIngredient)
-	app.Delete("/:id", routes.DeleteIngredient)
+	app.Get("/ingredient", routes.AllIngredients)
+	app.Post("/ingredient", routes.AddIngredient)
+	app.Put("/ingredient/:id", routes.UpdateIngredient)
+	app.Delete("/ingredient/:id", routes.DeleteIngredient)
 }
 
 func main() {
