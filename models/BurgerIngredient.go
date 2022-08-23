@@ -10,4 +10,6 @@ type BurgerIngredients struct {
 	IngredientId   int
 	IngredientName string
 	Amount         int
+	Burger         Burger
+	Ingredient     Ingredient
 }
