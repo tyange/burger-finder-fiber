@@ -10,11 +10,11 @@ import (
 )
 
 func setUpRoutes(app *fiber.App) {
-	app.Get("/ingredient", routes.AllIngredients)
-	app.Get("/ingredient/:id", routes.FindOneIngredient)
-	app.Post("/ingredient", routes.AddIngredient)
-	app.Put("/ingredient/:id", routes.UpdateIngredient)
-	app.Delete("/ingredient/:id", routes.DeleteIngredient)
+	app.Get("/ingredients", routes.AllIngredients)
+	app.Get("/ingredients/:id", routes.FindOneIngredient)
+	app.Post("/ingredients", routes.AddIngredient)
+	app.Put("/ingredients/:id", routes.UpdateIngredient)
+	app.Delete("/ingredients/:id", routes.DeleteIngredient)
 }
 
 func main() {
