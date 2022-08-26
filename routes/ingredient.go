@@ -39,9 +39,13 @@ func UpdateIngredient(c *fiber.Ctx) error {
 	updatedData := new(models.Ingredient)
 	id := c.Params("id")
 
-	targetIngredient := database.DBConn.Model(&ingredient).Where("id = ?", id)
-
 	if err := c.BodyParser(updatedData); err != nil {
+		return c.Status(400).JSON(err.Error())
+	}
+
+	targetIngredient := database.DBConn.First(&ingredient, id)
+
+	if err := targetIngredient.Error; err != nil {
 		return c.Status(400).JSON(err.Error())
 	}
 
