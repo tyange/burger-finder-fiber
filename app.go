@@ -15,6 +15,11 @@ func setUpRoutes(app *fiber.App) {
 	app.Post("/ingredients", routes.AddIngredient)
 	app.Put("/ingredients/:id", routes.UpdateIngredient)
 	app.Delete("/ingredients/:id", routes.DeleteIngredient)
+	app.Get("/burgers", routes.AllBurgers)
+	app.Get("/burgers/:id", routes.FindOneBurger)
+	app.Post("/burgers", routes.AddBurger)
+	app.Put("/burgers/:id", routes.UpdateBurger)
+	app.Delete("/burgers/:id", routes.DeleteBurger)
 }
 
 func main() {

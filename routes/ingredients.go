@@ -3,6 +3,7 @@ package routes
 import (
 	"burger-finder-fiber/database"
 	"burger-finder-fiber/models"
+	"burger-finder-fiber/routes/utils"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -15,18 +16,23 @@ func AllIngredients(c *fiber.Ctx) error {
 }
 
 func FindOneIngredient(c *fiber.Ctx) error {
-	var ingredient []models.Ingredient
+	ingredient := models.Ingredient{}
 	id := c.Params("id")
 
-	database.DBConn.Model(&ingredient).Where("id = ?", &id)
+	foundIngredient := database.DBConn.First(&ingredient, id)
 
-	return c.Status(200).JSON(&ingredient)
+	if err := foundIngredient.Error; err != nil {
+		return utils.ErrorHandlder(c, err)
+	}
+
+	return c.Status(200).JSON(ingredient)
 }
 
 func AddIngredient(c *fiber.Ctx) error {
-	ingredient := new(models.Ingredient)
-	if err := c.BodyParser(ingredient); err != nil {
-		return c.Status(400).JSON(err.Error())
+	ingredient := models.Ingredient{}
+
+	if err := c.BodyParser(&ingredient); err != nil {
+		return utils.ErrorHandlder(c, err)
 	}
 
 	database.DBConn.Create(&ingredient)
@@ -35,11 +41,11 @@ func AddIngredient(c *fiber.Ctx) error {
 }
 
 func UpdateIngredient(c *fiber.Ctx) error {
-	var ingredient []models.Ingredient
+	ingredient := models.Ingredient{}
 	updatedData := new(models.Ingredient)
 	id := c.Params("id")
 
-	if err := c.BodyParser(updatedData); err != nil {
+	if err := c.BodyParser(&updatedData); err != nil {
 		return c.Status(400).JSON(err.Error())
 	}
 
@@ -49,15 +55,19 @@ func UpdateIngredient(c *fiber.Ctx) error {
 		return c.Status(400).JSON(err.Error())
 	}
 
-	targetIngredient.Updates(models.Ingredient{Name: updatedData.Name, Kind: updatedData.Kind})
+	targetIngredient.Updates(updatedData)
 
-	return c.Status(200).JSON(updatedData)
+	return c.Status(200).JSON(ingredient)
 }
 
 func DeleteIngredient(c *fiber.Ctx) error {
-	var ingredient []models.Ingredient
+	ingredient := models.Ingredient{}
 	id := c.Params("id")
-	targetIngredient := database.DBConn.Model(&ingredient).Where("id = ?", id)
+	targetIngredient := database.DBConn.First(&ingredient, id)
+
+	if err := targetIngredient.Error; err != nil {
+		return utils.ErrorHandlder(c, err)
+	}
 
 	targetIngredient.Delete(&ingredient)
 
