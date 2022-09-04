@@ -10,5 +10,5 @@ type Burger struct {
 	Brand       string
 	isVegan     bool
 	imageUrl    string
-	Ingredients []BurgerIngredients
+	Ingredients []BurgerIngredient
 }

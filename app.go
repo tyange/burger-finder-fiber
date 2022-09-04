@@ -18,6 +18,7 @@ func setUpRoutes(app *fiber.App) {
 	app.Get("/burgers", routes.AllBurgers)
 	app.Get("/burgers/:id", routes.FindOneBurger)
 	app.Post("/burgers", routes.AddBurger)
+	app.Post("/burgers/:id", routes.AddBurgerIngredients)
 	app.Put("/burgers/:id", routes.UpdateBurger)
 	app.Delete("/burgers/:id", routes.DeleteBurger)
 }

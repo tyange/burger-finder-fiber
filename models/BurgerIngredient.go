@@ -2,14 +2,13 @@ package models
 
 import "gorm.io/gorm"
 
-type BurgerIngredients struct {
+type BurgerIngredient struct {
 	gorm.Model
 
-	Id             uint `gorm:"primary_key"`
-	BurgerId       int
-	IngredientId   int
-	IngredientName string
-	Amount         int
-	Burger         Burger
-	Ingredient     Ingredient
+	Id           uint `gorm:"primary_key"`
+	BurgerId     uint
+	IngredientId uint
+	Amount       int
+	Burger       Burger     `gorm:"foreignKey:BurgerId"`
+	Ingredient   Ingredient `gorm:"foreignKey:IngredientId"`
 }

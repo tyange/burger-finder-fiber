@@ -40,6 +40,29 @@ func AddBurger(c *fiber.Ctx) error {
 	return c.Status(200).JSON(burger)
 }
 
+func AddBurgerIngredients(c *fiber.Ctx) error {
+	type IngredientsData struct {
+		Ingredients []struct {
+			Amount       int
+			IngredientID uint
+			BurgerID     uint
+		}
+	}
+
+	var ingredientsData IngredientsData
+
+	if err := c.BodyParser(&ingredientsData); err != nil {
+		return utils.ErrorHandlder(c, err)
+	}
+
+	for _, v := range ingredientsData.Ingredients {
+		burgerIngredient := models.BurgerIngredient{Amount: v.Amount, BurgerId: v.BurgerID, IngredientId: v.IngredientID}
+		database.DBConn.Create(&burgerIngredient)
+	}
+
+	return c.Status(200).JSON(ingredientsData)
+}
+
 func UpdateBurger(c *fiber.Ctx) error {
 	burger := models.Burger{}
 	updatedData := new(models.Burger)

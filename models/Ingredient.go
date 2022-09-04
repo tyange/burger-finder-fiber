@@ -8,5 +8,5 @@ type Ingredient struct {
 	Id          uint `gorm:"primary_key"`
 	Name        string
 	Kind        string
-	BurgersWith []BurgerIngredients
+	BurgersWith []BurgerIngredient
 }
