@@ -1,11 +1,17 @@
 package models
 
-import "gorm.io/gorm"
+import (
+	"gorm.io/gorm"
+	"time"
+)
 
 type BurgerIngredient struct {
 	gorm.Model
 
 	Id           uint `gorm:"primary_key"`
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	DeletedAt    gorm.DeletedAt `gorm:"index"`
 	BurgerId     uint
 	IngredientId uint
 	Amount       int
