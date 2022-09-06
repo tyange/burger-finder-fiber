@@ -5,6 +5,7 @@ import (
 	"burger-finder-fiber/models"
 	"burger-finder-fiber/routes/utils"
 	"github.com/gofiber/fiber/v2"
+	"strconv"
 )
 
 func AllBurgers(c *fiber.Ctx) error {
@@ -41,11 +42,16 @@ func AddBurger(c *fiber.Ctx) error {
 }
 
 func AddBurgerIngredients(c *fiber.Ctx) error {
+	bgId, err := strconv.Atoi(c.Params("id"))
+
+	if err != nil {
+		return utils.ErrorHandlder(c, err)
+	}
+
 	type IngredientsData struct {
 		Ingredients []struct {
 			Amount       int
-			IngredientID uint
-			BurgerID     uint
+			IngredientId uint
 		}
 	}
 
@@ -56,7 +62,7 @@ func AddBurgerIngredients(c *fiber.Ctx) error {
 	}
 
 	for _, v := range ingredientsData.Ingredients {
-		burgerIngredient := models.BurgerIngredient{Amount: v.Amount, BurgerId: v.BurgerID, IngredientId: v.IngredientID}
+		burgerIngredient := models.BurgerIngredient{Amount: v.Amount, BurgerId: uint(bgId), IngredientId: v.IngredientId}
 		database.DBConn.Create(&burgerIngredient)
 	}
 
@@ -65,22 +71,16 @@ func AddBurgerIngredients(c *fiber.Ctx) error {
 
 func UpdateBurger(c *fiber.Ctx) error {
 	burger := models.Burger{}
-	updatedData := new(models.Burger)
+	updatedData := models.Burger{}
 	id := c.Params("id")
 
 	if err := c.BodyParser(&updatedData); err != nil {
 		return utils.ErrorHandlder(c, err)
 	}
 
-	targetBurger := database.DBConn.First(&burger, id)
+	database.DBConn.First(&burger, id).Updates(&updatedData)
 
-	if err := targetBurger.Error; err != nil {
-		return utils.ErrorHandlder(c, err)
-	}
-
-	targetBurger.Updates(updatedData)
-
-	return c.Status(200).JSON(updatedData)
+	return c.Status(200).JSON(burger)
 }
 
 func DeleteBurger(c *fiber.Ctx) error {
